@@ -5,12 +5,12 @@ body {
   height: 100vh;
   margin: 0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #c0d3e6;
+  background: #f8f9fa url('grid-me.png');
 }
 
 #game {
   text-align: center;
-  background-color: #ffffff;
+  background-color: rgba(255, 255, 255, 0.8);
   border: 2px solid #dee2e6;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
