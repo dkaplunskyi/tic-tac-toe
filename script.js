@@ -1,24 +1,45 @@
-const player1 = {
-  name: 'Player 1',
-  marker: 'X',
-  cells: new Array(9).fill(null),
-  getName: function(){
-    return this.name
-  }
-}
-const player2 = {
-  name: 'Player 2',
-  marker: 'O',
-  cells: new Array(9).fill(null),
-  getName: function(){
-    return this.name
-  }
+function createPlayer(name, marker) {
+  return {
+    name: name,
+    marker: marker,
+    cells: new Array(9).fill(null),
+    getName: function () {
+      return this.name;
+    }
+  };
 }
 
-let currentPlayer = 'X';
+function createCurrentPlayer(initialMarker) {
+  return {
+    currentPlayerMarker: initialMarker,
+    getPlayerMarker: function () {
+      return this.currentPlayerMarker;
+    },
+    setPlayerMarker: function (newMarker) {
+      this.currentPlayerMarker = newMarker;
+    }
+  };
+}
 
+const player1 = createPlayer('Player 1', 'X');
+const player2 = createPlayer('Player 2', 'O');
+
+// Creating an instance for currentPlayer
+const currentPlayer = createCurrentPlayer('X');
+
+const resetBtn = document.querySelector('#reset');
+resetBtn.addEventListener('click', resetGame)
 const cells = document.querySelectorAll('.cell');
 cells.forEach(cell => cell.addEventListener('click', assignCellToPlayer));
+
+function resetGame() {
+  player1.cells = new Array(9).fill(null);
+  player2.cells = new Array(9).fill(null);
+
+  currentPlayer.setPlayerMarker('X');
+  cells.forEach(cell => cell.textContent = '');
+  cells.forEach(cell => cell.addEventListener('click', assignCellToPlayer));
+}
 
 function assignCellToPlayer(event) {
   let index = event.target.getAttribute('data-index');
@@ -28,11 +49,11 @@ function assignCellToPlayer(event) {
     return;
   }
 
-  event.target.textContent = currentPlayer;
+  event.target.textContent = currentPlayer.getPlayerMarker();
 
-  if (player1.cells[index] === null && currentPlayer === 'X') {
+  if (currentPlayer.getPlayerMarker() === 'X') {
     player1.cells[index] = index;
-  }else{
+  } else {
     player2.cells[index] = index;
   }
   switchPlayer();
@@ -45,7 +66,7 @@ function assignCellToPlayer(event) {
 }
 
 function switchPlayer() {
-  currentPlayer = currentPlayer === 'X' ? 'O' : 'X';
+  currentPlayer.setPlayerMarker(currentPlayer.getPlayerMarker() === 'X' ? 'O' : 'X');
 }
 
 function checkWinner(player) {
@@ -55,12 +76,12 @@ function checkWinner(player) {
     ['0', '4', '8'], ['2', '4', '6']                  // Diagonals
   ];
 
-  let result = winningCombinations.some(combination =>
-    combination.every(cell => player.cells.includes(cell))
-  );
+  let winner = winningCombinations.some(combination =>
+    combination.every(cell => player.cells.includes(cell)));
 
-  if (result) {
+  if (winner) {
     console.log(player.getName() + ' Win!');
+    cells.forEach(cell => cell.removeEventListener('click', assignCellToPlayer));
   }
 }
 
