@@ -1,3 +1,4 @@
+// Create a game DOM elements using Immediately Invoked Function Expression IIFE.
 const createGameBoardElements = (function () {
   const game = document.createElement('div');
   const board = document.createElement('div');
@@ -118,12 +119,19 @@ function checkWinner(player) {
   let winner = winningCombinations.some(combination =>
     combination.every(cell => player.cells.includes(cell)));
 
-  // Display a winner and remove a 'click' event listener from cells to prevent the game from continuing if there is a winner.
+  // Set a winner. 
+  // Display a winner. 
+  // Remove a 'click' event listener from cells to prevent the game from continuing if there is a winner.
   if (winner) {
     gameBoard.winner = player.getMarker();
     cells.forEach(cell => cell.removeEventListener('click', playerAction));
-    output.textContent = `${gameBoard.winner} is win!`;
+    let span = document.createElement('span');
+    let textNode = document.createTextNode(' is a winner!')
+    span.textContent = `${gameBoard.winner}`;
+    output.appendChild(span);
+    output.appendChild(textNode);
   }
+  
   // Check if there is no winner.
   if (gameBoard.board.every(cell => cell != null) && gameBoard.winner == null) {
     output.textContent = `Draw!`;
