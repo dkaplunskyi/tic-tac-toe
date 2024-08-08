@@ -38,7 +38,7 @@ h1,
 #message,
 .cell {
   color: white;
-  font-size: calc(1.4rem + 3vw);
+  font-size: calc(2rem + 5vh);
 }
 
 #reset {
