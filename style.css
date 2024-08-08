@@ -29,14 +29,13 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: my-fantasy;
+  font-family: fantasy, my-fantasy;
 }
 
 h1,
 #message,
 .cell {
   color: white;
-  /* font-size: 4rem; */
   font-size: calc(1.4rem + 3vw);
 }
 
@@ -61,5 +60,5 @@ h1,
 }
 
 #message span {
-  font-family: my-fantasy;
+  font-family: fantasy, my-fantasy;
 }
