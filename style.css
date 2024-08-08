@@ -1,4 +1,4 @@
-body{
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
@@ -31,7 +31,8 @@ h1,
 #message,
 .cell {
   color: white;
-  font-size: 4rem;
+  /* font-size: 4rem; */
+  font-size: calc(1.4rem + 3vw);
 }
 
 #reset {
