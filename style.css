@@ -21,7 +21,6 @@ body{
   display: flex;
   justify-content: center;
   align-items: center;
-  /* font-size: 4rem; */
   font-family: fantasy;
 }
 
@@ -51,5 +50,4 @@ h1,
 
 #message span {
   font-family: fantasy;
-
 }
