@@ -1,3 +1,8 @@
+@font-face {
+  font-family: my-fantasy;
+  src: url(kinder-font/01Kinder-ep7O.otf);
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -24,7 +29,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-family: fantasy;
+  font-family: my-fantasy;
 }
 
 h1,
@@ -56,5 +61,5 @@ h1,
 }
 
 #message span {
-  font-family: fantasy;
+  font-family: my-fantasy;
 }
