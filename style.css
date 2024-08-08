@@ -31,14 +31,15 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
+  color: white;
+  font-size: calc(4rem + 1vh);
   font-family: my-fantasy, sans-serif;
 }
 
 h1,
-#message,
-.cell {
+#message {
   color: white;
-  font-size: calc(2rem + 5vh);
+  font-size: calc(2rem + 1vh);
 }
 
 #reset {
