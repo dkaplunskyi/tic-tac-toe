@@ -1,8 +1,41 @@
+const createGameBoardElements = (function () {
+  const game = document.createElement('div');
+  const board = document.createElement('div');
+  const header = document.createElement('h1');
+  const resetBtn = document.createElement('button');
+  const outputMsg = document.createElement('div');
+
+  game.id = 'game';
+  board.id = 'board';
+  header.textContent = 'Tic Tac Toe';
+  resetBtn.id = 'reset';
+  resetBtn.textContent = 'Reset Game';
+  outputMsg.id = 'message';
+
+  
+  for (let i = 0; i < 9; i++) {
+    const cell = document.createElement('div');
+    cell.classList.add('cell');
+    cell.setAttribute(`data-index`, i)
+    board.appendChild(cell);
+  }
+  
+  document.body.appendChild(game);
+  game.appendChild(header);
+  game.appendChild(board)
+  game.appendChild(resetBtn);
+  game.appendChild(outputMsg);
+
+})();
+
+// Get DOM elements
 const resetBtn = document.querySelector('#reset');
+const output = document.querySelector('#message');
 const cells = document.querySelectorAll('.cell');
-// Event listeners
+
+// Set event listeners
 resetBtn.addEventListener('click', resetGame)
-cells.forEach(cell => cell.addEventListener('click', startGame));
+cells.forEach(cell => cell.addEventListener('click', playerAction));
 
 // Function factory to create a player.
 function createPlayer(marker) {
@@ -14,6 +47,17 @@ function createPlayer(marker) {
     }
   };
 }
+
+// Function factory to create a game board.
+function createGameBoard() {
+  return {
+    board: new Array(9).fill(null),
+    winner: null
+  }
+}
+
+// Create an empty game board.
+let gameBoard = createGameBoard();
 
 // Current player object. The marker of current player changes after each click.
 const currentPlayer = {
@@ -30,18 +74,8 @@ const currentPlayer = {
 const player1 = createPlayer('X');
 const player2 = createPlayer('O');
 
-// Reset game
-function resetGame() {
-  player1.cells = new Array(9).fill(null);
-  player2.cells = new Array(9).fill(null);
-
-  currentPlayer.setPlayerMarker('X');
-  cells.forEach(cell => cell.textContent = '');
-  cells.forEach(cell => cell.addEventListener('click', startGame));
-}
-
 // Main functionality of game
-function startGame(event) {
+function playerAction(event) {
   let targetCellIndex = event.target.getAttribute('data-index');
 
   // Check if the cell is already taken
@@ -59,19 +93,18 @@ function startGame(event) {
     player2.cells[targetCellIndex] = targetCellIndex;
   }
 
+  gameBoard.board[targetCellIndex] = targetCellIndex;
+
   switchPlayer();
 
-  console.log(player1.cells);
-  console.log(player2.cells);
-  console.log(checkWinner(player1));
-  console.log(checkWinner(player2));
+  checkWinner(player1);
+  checkWinner(player2);
 }
 
 // Switch a player depends on current player marker.
 function switchPlayer() {
   currentPlayer.setPlayerMarker(currentPlayer.getPlayerMarker() === 'X' ? 'O' : 'X');
 }
-
 
 // Check for a winner function.
 function checkWinner(player) {
@@ -84,13 +117,27 @@ function checkWinner(player) {
   // Find a player that has a winning combination in his cells array.
   let winner = winningCombinations.some(combination =>
     combination.every(cell => player.cells.includes(cell)));
+
   // Display a winner and remove a 'click' event listener from cells to prevent the game from continuing if there is a winner.
   if (winner) {
-    console.log(player.getMarker() + ' is win!');
-    cells.forEach(cell => cell.removeEventListener('click', startGame));
+    gameBoard.winner = player.getMarker();
+    cells.forEach(cell => cell.removeEventListener('click', playerAction));
+    output.textContent = `${gameBoard.winner} is win!`;
+  }
+  // Check if there is no winner.
+  if (gameBoard.board.every(cell => cell != null) && gameBoard.winner == null) {
+    output.textContent = `Draw!`;
   }
 }
 
+// Reset game
+function resetGame() {
+  player1.cells.fill(null);
+  player2.cells.fill(null);
 
-
-
+  currentPlayer.setPlayerMarker('X');
+  gameBoard = createGameBoard();
+  output.textContent = '';
+  cells.forEach(cell => cell.textContent = '');
+  cells.forEach(cell => cell.addEventListener('click', playerAction));
+}
